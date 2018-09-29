@@ -167,5 +167,3 @@ NAMESPACE and man/ directories because they’re generated from comments. From a
 practical pespective, it’s better to commit these files: R packages have no way
 to generate .Rd files on installation so ignoring derived files means that users
 who install your package from GitHub will have no documentation.
-
-blabla this is clearly a mistake
