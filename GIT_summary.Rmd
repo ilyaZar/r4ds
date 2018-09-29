@@ -1,0 +1,169 @@
+---
+title: "GitSummary"
+author: "I.Z."
+date: "September 29, 2018"
+output: pdf_document
+---
+
+```{r rsetup}
+knitr::opts_chunk$set(eval = FALSE, error = FALSE)
+```
+```{bash bsetup, echo = FALSE}
+knitr::opts_chunk$set(eval = FALSE, error = FALSE)
+```
+# Record changes
+
+## 1. Visualize changes:
+
+In the shell, use
+```{bash, error = FALSE}
+git status
+git diff
+```
+to see an overview of changes and  to show detailed differences.
+In RStudio click on Diff. The background colours tells
+you whether the text has been added (green) or removed (red). (If you're
+colourblind you can use the line numbers in the two columns at the far left as a
+guide: a number in the first column identifies the old version, a number in
+second column identifies the new version.) The grey lines of code above and
+below the changes give you additional context.
+
+
+## 2. Commits:
+
+The fundamental unit of work in Git is a commit. A commit takes a snapshot of
+your code at a specified point in time. Using a Git commit is like using anchors
+and other protection when climbing. If you're crossing a dangerous rock face you
+want to make sure you've used protection to catch you if you fall. Commits play 
+a similar role: if you make a mistake, you can't fall past the previous commit. 
+Coding without commits is like free-climbing: you can travel much faster in the
+short-term, but in the long-term the chances of catastrophic failure are high!
+Like rock climbing protection, you want to be judicious in your use of commits.
+Committing too frequently will slow your progress; use more commits when you're
+in uncertain or dangerous territory. Commits are also helpful to others, because
+they show your journey, not just the destination.
+
+### 2.A. Creating commits:
+
+*   There are five key components to every commit:
+    * A _unique identifier_, called a SHA (short for secure hash algorithm).
+    * A _changeset_ that describes which files were added, modified and deleted.
+    * A human-readable _commit message_.
+    * A _parent_, the commit that came before this one. (There are two exceptions
+    to this rule: the initial commit doesn't have a parent, and merges, which
+    you'll learn about later, have two parents.)
+    * An _author_.
+
+You create a commit in two stages:
+1.  You __stage__ files, telling Git which changes should be included in the
+next commit.
+1.  You __commit__ the staged files, describing the changes with a message.
+
+In RStudio, staging and committing are done in the same place, the commit
+window, which you can open by pressing Ctrl + Alt + m.
+
+The commit window is made up of three panes:
+
+1.  Top-left pane: current status as the Git pane in the main RStudio window
+1.  Bottom pane: shows the diff of the currently selected file (exactly the same
+window you see when clicking Diff)
+1.  Top-right pane: commit message 
+
+To create a new commit:
+
+1.  Save your changes.
+1.  Open the commit window by ressing Ctrl + Alt + m.
+1.  Select files: to stage (select) a single file for inclusion, tick its check
+box, to stage all files press Ctrl/Cmd + A, then click stage. As you stage each
+file, you'll notice that its status changes. The icon will change columns from
+right (unstaged status) to left (staged status), and you might see one of two
+new icons:
+    + Added: after staging an untracked file, Git now knows that you want to add
+    it to the repo.
+    + Renamed: If you rename a file, Git initially sees it as a deletion and
+    addition. Once you stage both changes, Git recognises that it's a rename.
+Sometimes you'll see a status in both columns. This means that you have both
+staged and unstaged changes in the same file. This happens when you've made some
+changes, staged them, and then made some more. Clicking the staged checkbox will
+stage your new changes, clicking it again will unstage both sets of changes.
+1.  Stage files, as above.
+1.  Write a commit message (top-right panel) which describes the changes that
+you've made. The first line of a commit message is called the subject line and
+should be brief (50 characters or less). For complicated commits, you can follow
+it with a blank line and then a paragraph or bulleted list providing more detail.
+Write messages in imperative, like you're telling someone what to do: “fix this
+bug”, not “fixed this bug” or “this bug was fixed”.
+1. Click Commit.
+
+Staging files is a little more complicated in the shell. You use `git add` to
+stage new and modified files, and `git rm` to stage deleted files. To create
+the commit, use `git commit -m <message>`.
+
+### 2.B. Commit best practices:
+
+Ideally, each commit should be minimal but complete:
+
+*   __Minimal__: A commit should only contain changes related to a single problem.
+This will make it easier to understand the commit at a glance, and to describe
+it with a simple message. If you should discover a new problem, you should do a
+separate commit.
+*   __Complete__: A commit should solve the problem that it claims to solve. If
+you think you've fixed a bug, the commit should contain a unit test that
+confirms you're right.
+
+Each commit message should:
+
+*   __Be concise, yet evocative__: At a glance, you should be able to see what a
+commit does. Yet there should be enough detail so you can remember (and
+understand) what was done.
+
+*   __Describe the why, not the what__: Since you can always retrieve the diff
+associated with a commit, the message doesn't need to say exactly what changed.
+Instead it should provide a high-level summary that focuses on the reasons for
+the change.
+
+If you do this:
+
+*   It'll be easier to work with others. For example, if two people have changed
+the same file in the same place, it'll be easier to resolve conflicts if the
+commits are small and it's clear why each change was made.
+
+*   Project newcomers can more easily understand the history by reading the
+commit logs.
+
+*   You can load and run your package at any point along its development
+history. This can be tremendously useful with tools like bisectr, which allow
+you to use binary search to quickly find the commit that introduced a bug.
+
+*   If you can figure out exactly when a bug was introduced, you can easily
+understand what you were doing (and why!).
+
+You might think that because no one else will ever look at your repo, that
+writing good commit messages is not worth the effort. But keep in mind that you
+have one very important collaborator: future-you! If you spend a little time now 
+polishing your commit messages, future-you will thank you if and when they need
+to do a post-mortem on a bug.
+
+Remember that these directives are aspirational. You shouldn't let them get in
+your way. If you look at the commit history of my repositories, you'll notice a
+lot of them aren't that good, especially when I start to get frustrated that I
+still haven't managed to fix a bug. Strive to follow these guidelines, and
+remember it's better to have multiple bad commits than to have one perfect
+commit.
+
+### 2.C. Ignoring files
+
+Often, there are files that you don’t want to include in the repository. They
+might be transient (like LaTeX or C build artefacts), very large, or generated
+on demand. Rather than carefully not staging them each time, you should instead
+add them to `.gitignore`. This will prevent them from accidentally being added.
+The easiest way to do this is to right-click on the file in the Git pane and
+select Ignore. If you want to ignore multiple files, you can use a wildcard 
+"glob" like *.png. 
+
+Some developers never commit derived files, files that can be generated
+automatically. For an R package this would mean ignoring the files in the
+NAMESPACE and man/ directories because they’re generated from comments. From a
+practical pespective, it’s better to commit these files: R packages have no way
+to generate .Rd files on installation so ignoring derived files means that users
+who install your package from GitHub will have no documentation.
