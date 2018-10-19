@@ -5,7 +5,7 @@ date: "September 29, 2018"
 output: pdf_document
 ---
 
-```{r rsetup}
+```{r rsetup, echo = FALSE}
 knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```
 ```{bash bsetup, echo = FALSE}
@@ -55,9 +55,10 @@ they show your journey, not just the destination.
     * An _author_.
 
 You create a commit in two stages:
+
 1.  You __stage__ files, telling Git which changes should be included in the
 next commit.
-1.  You __commit__ the staged files, describing the changes with a message.
+2.  You __commit__ the staged files, describing the changes with a message.
 
 In RStudio, staging and committing are done in the same place, the commit
 window, which you can open by pressing Ctrl + Alt + m.
@@ -75,17 +76,15 @@ To create a new commit:
 1.  Open the commit window by ressing Ctrl + Alt + m.
 1.  Select files: to stage (select) a single file for inclusion, tick its check
 box, to stage all files press Ctrl/Cmd + A, then click stage. As you stage each
-file, you'll notice that its status changes. The icon will change columns from
-right (unstaged status) to left (staged status), and you might see one of two
+file, you'll notice that its status changes: the icon will change columns (within the "Status column") from
+right (unstaged) to left (staged), and you might see one of two
 new icons:
     + Added: after staging an untracked file, Git now knows that you want to add
     it to the repo.
     + Renamed: If you rename a file, Git initially sees it as a deletion and
     addition. Once you stage both changes, Git recognises that it's a rename.
-Sometimes you'll see a status in both columns. This means that you have both
-staged and unstaged changes in the same file. This happens when you've made some
-changes, staged them, and then made some more. Clicking the staged checkbox will
-stage your new changes, clicking it again will unstage both sets of changes.
+    + Sometimes you'll see a status in both columns. This means that you
+    have both staged and unstaged changes in the same file. This happens when       you've made some changes, staged them, and then made some more. Clicking the     staged checkbox will stage your new changes, clicking it again will unstage     both sets of changes.
 1.  Stage files, as above.
 1.  Write a commit message (top-right panel) which describes the changes that
 you've made. The first line of a commit message is called the subject line and
@@ -167,3 +166,10 @@ NAMESPACE and man/ directories because they’re generated from comments. From a
 practical pespective, it’s better to commit these files: R packages have no way
 to generate .Rd files on installation so ignoring derived files means that users
 who install your package from GitHub will have no documentation.
+
+
+## 3. Working with others
+
+You use push to send your changes to GitHub. If you’re working with others, they also push their changes to GitHub. But, to see their changes locally you’ll need to pull their changes from GitHub. In fact, to make sure everyone is in sync, Git will only let you push to a repo if you’ve retrieved the most recent version with a pull.
+
+When you pull, Git first downloads (fetches) all of the changes and then merges them with the changes that you’ve made. A merge is a commit with two parents. It takes two different lines of development and combines them into a single result. In many cases, Git can do this automatically: for example, when changes are made to different files, or to different parts of the same file. However, if changes are made to the same place in a file, you’ll need to resolve the merge conflict yourself.
