@@ -11,6 +11,37 @@ knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```{bash bsetup, echo = FALSE}
 knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```
+# Installation
+
+Before starting to use Git you should first tell Git who you are so that you can
+be identified when you make contributions to projects. This can be done by
+specifying your name and email address.
+
+In the shell, use
+```{bash, error = FALSE}
+git config --global user.name "Your Name Comes Here"
+git config --global user.email your_email@yourdomain.example.com
+```
+These two commands only need to be executed once. The information you provide is included in a `.gitconfig` file in your home directory and is used to label your
+actions in the Git log.
+
+If you have spaces in the name you provide then be sure to enclose the name in
+quotation marks. (You can check if you’re set up correctly by running 
+`git config --global --list`.)
+
+Once you are in the project directory, you need to initialize your Git
+repository with the command git init so that Git knows that it needs to track
+changes here.
+
+```{bash, error = FALSE}
+luke@nokomis ~/myproject% git init
+Initialized empty Git repository in /home/luke/myproject/.git/
+```
+
+If you type `ls -a` you will see a directory named `.git` has been added.
+This directory stores all of the history information and other configuration
+data. Don't touch this directory.
+
 # Record changes
 
 ## 1. Visualize changes:
@@ -76,7 +107,8 @@ To create a new commit:
 1.  Open the commit window by ressing Ctrl + Alt + m.
 1.  Select files: to stage (select) a single file for inclusion, tick its check
 box, to stage all files press Ctrl/Cmd + A, then click stage. As you stage each
-file, you'll notice that its status changes: the icon will change columns (within the "Status column") from
+file, you'll notice that its status changes: the icon will change columns
+(within the "Status column") from
 right (unstaged) to left (staged), and you might see one of two
 new icons:
     + Added: after staging an untracked file, Git now knows that you want to add
@@ -84,7 +116,10 @@ new icons:
     + Renamed: If you rename a file, Git initially sees it as a deletion and
     addition. Once you stage both changes, Git recognises that it's a rename.
     + Sometimes you'll see a status in both columns. This means that you
-    have both staged and unstaged changes in the same file. This happens when       you've made some changes, staged them, and then made some more. Clicking the     staged checkbox will stage your new changes, clicking it again will unstage     both sets of changes.
+    have both staged and unstaged changes in the same file. This happens when 
+    you've made some changes, staged them, and then made some more. Clicking the
+    staged checkbox will stage your new changes, clicking it again will unstage
+    both sets of changes.
 1.  Stage files, as above.
 1.  Write a commit message (top-right panel) which describes the changes that
 you've made. The first line of a commit message is called the subject line and
@@ -167,9 +202,120 @@ practical pespective, it’s better to commit these files: R packages have no wa
 to generate .Rd files on installation so ignoring derived files means that users
 who install your package from GitHub will have no documentation.
 
+# Details about how git works
 
-## 3. Working with others
+## 1. Pull
 
-You use push to send your changes to GitHub. If you’re working with others, they also push their changes to GitHub. But, to see their changes locally you’ll need to pull their changes from GitHub. In fact, to make sure everyone is in sync, Git will only let you push to a repo if you’ve retrieved the most recent version with a pull.
+You use push to send your changes to GitHub. If you’re working with others,
+they also push their changes to GitHub. But, to see their changes locally you’ll
+need to pull their changes from GitHub. In fact, to make sure everyone is in sync,
+Git will only let you push to a repo if you’ve retrieved the most recent version
+with a pull.
 
-When you pull, Git first downloads (fetches) all of the changes and then merges them with the changes that you’ve made. A merge is a commit with two parents. It takes two different lines of development and combines them into a single result. In many cases, Git can do this automatically: for example, when changes are made to different files, or to different parts of the same file. However, if changes are made to the same place in a file, you’ll need to resolve the merge conflict yourself.
+When you pull, Git first downloads (fetches) all of the changes and then merges
+them with the changes that you’ve made. In particular, `git pull` does:
+
+1.    `git fetch origin master` to update the local `origin/master` branch with
+the latest commits from GitHub.
+
+1.    `git merge origin/master` to combine the remote changes with your changes
+
+# Working with others
+
+## 1. Branching
+
+Sometimes you want to make big changes to your code without having to disturb
+your main stream of development. Maybe you want to break it up into multiple
+simple commits so you can easily track what you're doing. Maybe you#re not sure
+what you've done is the best approach and you want someone else to review your
+code. Or, maybe you want to try something experimental (you can merge it back
+only if the experiment succeeds). Branches and pull requests provide powerful
+tools to handle these situations.
+
+Although you haven't realised it, you're already using branches. The default
+branch is called __master__; it's where you've been saving your commits. If you
+synchronise your code to GitHub you’ll also have a branch called
+__origin/master__: it's a local copy of all the commits on GitHub, which gets
+synchronised when you pull. 
+
+It’s useful to create your own branches when you want to (temporarily) break
+away from the main stream of development. You can create a new branch with
+```{bash, error = FALSE}
+git checkout -b <branch-name>
+```
+Names should be in lower case letters and numbers, with - to separate words.
+
+Switch between branches with `git checkout`, e.g. to return to the main line of
+development use
+```{bash, error = FALSE}
+git checkout master.
+```
+You can also use the branch switcher at the top right of the Git pane.
+
+If you’ve forgotten the name of your branch in the shell, you can use 
+```{bash, error = FALSE}
+git branch
+* master
+  test
+```
+to list all existing branches. The asterisk indicates you are on the master
+branch, so you can do the merge.
+
+If you try to synchronise this branch to GitHub from inside RStudio, you'll
+notice that push and pull are disabled. To enable them, you'll need to first
+tell Git that your local branch has a remote equivalent:
+```{bash, error = FALSE}
+git push --set-upstream origin <branch-name>
+```
+
+After you've done that once, you can use the pull and push buttons as usual.
+
+If you've been working on a branch for a while, other work might have been going
+on in the master branch. To integrate that work into your branch, run
+```{bash, error = FALSE}
+git merge master
+```
+You will need to resolve any merge conflicts (see below). It's best to do this
+fairly frequently - the less your branch diverges from the master, the easier it
+will be to merge.
+
+After a while, suppose you feel the work done on some `test` branch is in fact
+useful and you want to merge that into your master branch. Again, you can call 
+`git merge` to merge two branches together. You need to do this from a checkout
+of the `master` branch:
+```{bash, error = FALSE}
+luke@nokomis ~/myproject% git merge test
+Merge made by recursive.
+ doc.txt |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+ create mode 100644 doc.txt
+```
+Running `git log` gives us the history of the two branches merged together with 
+a _merge commit_. Because we merged the test branch into the master branch we no
+longer need it. A branch can be deleted with the `-d` switch to `git branch`.
+Be careful when deleting branches; if you have not merged that branch into the
+"master"" then deleting a branch will lose all of the history associated with
+that branch.
+
+## 2. Merging
+
+When you pull, Git first downloads (fetches) all of the changes and then merges
+them with the changes that you’ve made. A merge is a commit with two parents. It
+takes two different lines of development and combines them into a single result.
+In many cases, Git can do this automatically: for example, when changes are made
+to different files, or to different parts of the same file. However, if changes
+are made to the same place in a file, you’ll need to resolve the merge conflict
+yourself.
+
+Once you’re done working on a branch, merge it back into the master, then delete
+the branch:
+```{bash, error = FALSE}
+git checkout master
+git merge <branch-name>
+git branch -d <branch-name>
+```
+(Git won't let you delete a branch unless you've merged it back into the master
+branch. If you do want to abandon a branch without merging it, you'll need to
+force delete with -D instead of -d. If you accidentally delete a branch, don't
+panic. It's usually possible to get it back. See the advice about undoing
+mistakes).
