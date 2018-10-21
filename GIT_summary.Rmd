@@ -11,6 +11,36 @@ knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```{bash bsetup, echo = FALSE}
 knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```
+# Installation
+
+Before starting to use Git you should first tell Git who you are so that you can
+be identified when you make contributions to projects. This can be done by
+specifying your name and email address.
+
+In the shell, use
+```{bash, error = FALSE}
+git config --global user.name "Your Name Comes Here"
+git config --global user.email your_email@yourdomain.example.com
+```
+These two commands only need to be executed once. The information you provide is included in a `.gitconfig` file in your home directory and is used to label your
+actions in the Git log.
+
+If you have spaces in the name you provide then be sure to enclose the name in
+quotation marks.
+
+Once you are in the project directory, you need to initialize your Git
+repository with the command git init so that Git knows that it needs to track
+changes here.
+
+```{bash, error = FALSE}
+luke@nokomis ~/myproject% git init
+Initialized empty Git repository in /home/luke/myproject/.git/
+```
+
+If you type `ls -a` you will see a directory named `.git` has been added.
+This directory stores all of the history information and other configuration
+data. Don't touch this directory.
+
 # Record changes
 
 ## 1. Visualize changes:
@@ -76,7 +106,8 @@ To create a new commit:
 1.  Open the commit window by ressing Ctrl + Alt + m.
 1.  Select files: to stage (select) a single file for inclusion, tick its check
 box, to stage all files press Ctrl/Cmd + A, then click stage. As you stage each
-file, you'll notice that its status changes: the icon will change columns (within the "Status column") from
+file, you'll notice that its status changes: the icon will change columns
+(within the "Status column") from
 right (unstaged) to left (staged), and you might see one of two
 new icons:
     + Added: after staging an untracked file, Git now knows that you want to add
@@ -84,7 +115,10 @@ new icons:
     + Renamed: If you rename a file, Git initially sees it as a deletion and
     addition. Once you stage both changes, Git recognises that it's a rename.
     + Sometimes you'll see a status in both columns. This means that you
-    have both staged and unstaged changes in the same file. This happens when       you've made some changes, staged them, and then made some more. Clicking the     staged checkbox will stage your new changes, clicking it again will unstage     both sets of changes.
+    have both staged and unstaged changes in the same file. This happens when 
+    you've made some changes, staged them, and then made some more. Clicking the
+    staged checkbox will stage your new changes, clicking it again will unstage
+    both sets of changes.
 1.  Stage files, as above.
 1.  Write a commit message (top-right panel) which describes the changes that
 you've made. The first line of a commit message is called the subject line and
@@ -168,8 +202,18 @@ to generate .Rd files on installation so ignoring derived files means that users
 who install your package from GitHub will have no documentation.
 
 
-## 3. Working with others
+# Working with others
 
-You use push to send your changes to GitHub. If you’re working with others, they also push their changes to GitHub. But, to see their changes locally you’ll need to pull their changes from GitHub. In fact, to make sure everyone is in sync, Git will only let you push to a repo if you’ve retrieved the most recent version with a pull.
+You use push to send your changes to GitHub. If you’re working with others,
+they also push their changes to GitHub. But, to see their changes locally you’ll
+need to pull their changes from GitHub. In fact, to make sure everyone is in sync,
+Git will only let you push to a repo if you’ve retrieved the most recent version
+with a pull.
 
-When you pull, Git first downloads (fetches) all of the changes and then merges them with the changes that you’ve made. A merge is a commit with two parents. It takes two different lines of development and combines them into a single result. In many cases, Git can do this automatically: for example, when changes are made to different files, or to different parts of the same file. However, if changes are made to the same place in a file, you’ll need to resolve the merge conflict yourself.
+When you pull, Git first downloads (fetches) all of the changes and then merges
+them with the changes that you’ve made. A merge is a commit with two parents. It
+takes two different lines of development and combines them into a single result.
+In many cases, Git can do this automatically: for example, when changes are made
+to different files, or to different parts of the same file. However, if changes
+are made to the same place in a file, you’ll need to resolve the merge conflict
+yourself.
