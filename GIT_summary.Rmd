@@ -281,7 +281,18 @@ git merge master
 ```
 You will need to resolve any merge conflicts (see below). It's best to do this
 fairly frequently - the less your branch diverges from the master, the easier it
-will be to merge.
+will be to merge. Once you’re done working on a branch, merge it back into the
+master, then delete the branch:
+```{bash, error = FALSE}
+git checkout master
+git merge <branch-name>
+git branch -d <branch-name>
+```
+(Git won't let you delete a branch unless you've merged it back into the master
+branch. If you do want to abandon a branch without merging it, you'll need to
+force delete with -D instead of -d. If you accidentally delete a branch, don't
+panic. It's usually possible to get it back. See the advice about undoing
+mistakes).
 
 After a while, suppose you feel the work done on some `test` branch is in fact
 useful and you want to merge that into your master branch. Again, you can call 
@@ -312,15 +323,4 @@ are made to the same place in a file, you’ll need to resolve the merge conflic
 yourself.
 
 
-Once you’re done working on a branch, merge it back into the master, then delete
-the branch:
-```{bash, error = FALSE}
-git checkout master
-git merge <branch-name>
-git branch -d <branch-name>
-```
-(Git won't let you delete a branch unless you've merged it back into the master
-branch. If you do want to abandon a branch without merging it, you'll need to
-force delete with -D instead of -d. If you accidentally delete a branch, don't
-panic. It's usually possible to get it back. See the advice about undoing
-mistakes).
+
