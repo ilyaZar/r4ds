@@ -104,7 +104,7 @@ window you see when clicking Diff)
 To create a new commit:
 
 1.  Save your changes.
-1.  Open the commit window by ressing Ctrl + Alt + m.
+1.  Open the commit window by pressing Ctrl + Alt + m.
 1.  Select files: to stage (select) a single file for inclusion, tick its check
 box, to stage all files press Ctrl/Cmd + A, then click stage. As you stage each
 file, you'll notice that its status changes: the icon will change columns
@@ -131,7 +131,42 @@ bug”, not “fixed this bug” or “this bug was fixed”.
 
 Staging files is a little more complicated in the shell. You use `git add` to
 stage new and modified files, and `git rm` to stage deleted files. To create
-the commit, use `git commit -m <message>`.
+the commit, use `git commit -m <message>`. In more detail:
+
+*   Type `git status` to see that origin/master and master are up to date.
+*   Make changes to a file e.g. "test.R".
+*   Once you are done editing the file, you can save/close it and run
+    `git diff` to see a summary of the changes. The output shown here is
+    the Unix `diff `format and it shows what lines were added, deleted, or
+    changed. If a line has a `-`in front of it, that line was changed. If a line
+    has a `+` in front of it, that line was added.
+*   At this point you can always type `git status` to see that there are
+    untracked files.
+*   Type `git add test.R` to stage i.e. track the changes files.
+*   At this point you can always type `git status` to see files that are changed
+    but have yet to be commited: "Changes to be committed".
+*   Now that you have added your new code file you can commit the change using
+    `git commit`. The `git commit` command requires that you provide a short
+    message about what the changes are and this can be done using the `-m` 
+    switch. If you do not use this switch git will open an editor session for
+    you to enter a message.
+*   After committing the change you can run `git status` again. It should say
+    something like
+    ```{bash, error = FALSE}
+    # On branch master
+    nothing to commit (working directory clean)
+    ```
+    i.e. as in the beginning, master and origin/master are up to date
+*   Since the combination of `git add` followed by `git commit` is so common
+    there is a shortcut: `git commit -a.`
+*   Now there are revisions in your project history. You can see the complete
+    project history by using the `git log`.
+
+In the end, after having created your commits, do not forget to push your
+changes with
+```{bash, error = FALSE}
+    git push
+```
 
 ### 2.B. Commit best practices:
 
@@ -250,7 +285,7 @@ history and find out where it occurred:
             git checkout <SHA> <filename>
         ```
         In both cases you’ll need to finish by staging and committing the files.
-    *   Now suppose you dicide that everything since a particular commit is not 
+    *   Now suppose you decide that everything since a particular commit is not 
         that useful. You can resolve this situation with the git revert command.
         Notice in the `git log` that the most recent commit has some identifier
         (e.g. 6d8dafe72a198ed63d11be8592c39bcd14179a6b: NOTE: this identifier
@@ -279,24 +314,6 @@ done with extreme care.
 If you're still stuck, try <http://sethrobertson.github.io/GitFixUm/fixup.html>
 or <http://justinhileman.info/article/git-pretty/>. They give step-by-step
 approaches to fixing many common (and not so common!) problems.
-
-# Details about how git works
-
-## 1. Pull
-
-You use push to send your changes to GitHub. If you’re working with others,
-they also push their changes to GitHub. But, to see their changes locally you’ll
-need to pull their changes from GitHub. In fact, to make sure everyone is in sync,
-Git will only let you push to a repo if you’ve retrieved the most recent version
-with a pull.
-
-When you pull, Git first downloads (fetches) all of the changes and then merges
-them with the changes that you’ve made. In particular, `git pull` does:
-
-1.    `git fetch origin master` to update the local `origin/master` branch with
-the latest commits from GitHub.
-
-1.    `git merge origin/master` to combine the remote changes with your changes
 
 # Working with others
 
@@ -390,7 +407,47 @@ A useful tool for viewing the branch structure of a Git archive is `gitk`.
 Running `gitk` with the `--all` switch indicates that gitk should show all
 branches.
 
-## 2. Merging
+# Details about how git works & some general remarks
+
+## 0. Geting help and collaboration ideas
+
+You can read the help page for a specific command by calling git help. For
+example, if you wanted to read the help page for git status, you could call
+```{bash, error = FALSE}
+    git help status
+```
+
+Inserting help in between git and the command name will retrieve the help page
+for that command
+
+Some ways for collaborating using Git:
+
+*   Set up a remote repository on a hosting service such as Github. All team
+    members will clone this repository and use git pull and git push to share
+    their changes.
+*   Have one team member maintain a git repository on a web page. Other team
+    members clone this repository and pull changes from it. Changes made by
+    others can be contributed to the repository maintainer as email patches.
+*   Use shared disk space for the remote repository (physical space such as a
+    USB drive or a sharing service like Dropbox).
+
+## 1. Pull
+
+You use push to send your changes to GitHub. If you’re working with others,
+they also push their changes to GitHub. But, to see their changes locally you’ll
+need to pull their changes from GitHub. In fact, to make sure everyone is in sync,
+Git will only let you push to a repo if you’ve retrieved the most recent version
+with a pull.
+
+When you pull, Git first downloads (fetches) all of the changes and then merges
+them with the changes that you’ve made. In particular, `git pull` does:
+
+1.    `git fetch origin master` to update the local `origin/master` branch with
+the latest commits from GitHub.
+
+1.    `git merge origin/master` to combine the remote changes with your changes
+
+## 2. Merging and resolving merge conflicts
 
 When you pull, Git first downloads (fetches) all of the changes and then merges
 them with the changes that you’ve made. A merge is a commit with two parents. It
@@ -400,5 +457,17 @@ to different files, or to different parts of the same file. However, if changes
 are made to the same place in a file, you’ll need to resolve the merge conflict
 yourself.
 
+## 3. Summary of essential Git commans
+
+*   `git status`: check status and see what has changed
+*   `git add`: add a changed file or a new file to be committed
+*   `git diff`: see the changes between the current version of a file and the version of the file most recently        committed
+*   `git commit`: commit changes to the history
+*   `git log`: show the history for a project
+*   `git revert`: undo a change introduced by a specific commit
+*   `git checkout`: switch branches or move within a branch
+*   `git clone`: clone a remote repository
+*   `git pull`: pull changes from a remote repoository
+*   `git push`: push changes to a remote repository
 
 
