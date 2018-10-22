@@ -26,12 +26,8 @@ These two commands only need to be executed once. The information you provide is
 actions in the Git log.
 
 If you have spaces in the name you provide then be sure to enclose the name in
-<<<<<<< HEAD
 quotation marks. (You can check if you’re set up correctly by running 
 `git config --global --list`.)
-=======
-quotation marks.
->>>>>>> fedeb5447469deab4beecc73411763cf43937e02
 
 Once you are in the project directory, you need to initialize your Git
 repository with the command git init so that Git knows that it needs to track
