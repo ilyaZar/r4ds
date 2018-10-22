@@ -11,6 +11,31 @@ knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```{bash bsetup, echo = FALSE}
 knitr::opts_chunk$set(eval = FALSE, error = FALSE)
 ```
+
+# Introduction
+
+Git is a version control (VCS) system for tracking changes to projects. Version
+control systems are also called revision control systems or source code
+management (SCM) systems. These projects can be large-scale programs like the
+Linux kernel, but they can also be smaller scale projects like your own R
+development, homework assignments, papers, or thesis. There are many other VCSs
+available (subversion and Mercurial are currently used extensively in opens
+source projects) but Git is one of the easier ones to set up. It is also well
+supported by the GitHub ecosystem, and UI has recently set up its own GitHub
+servise.
+
+You can install Git on your own Linux system. Git is available for installation
+as a package within most Linux distributions and can be installed that way
+(e.g. using yum or dnf on Red Hat systems or apt-get on Debian systems, or their
+graphical interfaces). You can also install from source code.
+
+A number of programming editors Interated Develop[ment Enviornments (IDEs)
+include Git support. Several Emacs Git modes are available. RStudio has
+integrated Git support. Checkout other instructions available in
+http://happygitwithr.com/
+
+There is a graphical interface `git-gui` that may be useful.
+
 # Installation
 
 Before starting to use Git you should first tell Git who you are so that you can
