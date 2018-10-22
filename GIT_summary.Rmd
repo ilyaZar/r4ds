@@ -1,5 +1,5 @@
 ---
-title: "GitSummary"
+title: "Git Summary"
 author: "I.Z."
 date: "September 29, 2018"
 output: pdf_document
@@ -201,6 +201,84 @@ NAMESPACE and man/ directories because they’re generated from comments. From a
 practical pespective, it’s better to commit these files: R packages have no way
 to generate .Rd files on installation so ignoring derived files means that users
 who install your package from GitHub will have no documentation.
+
+# Undoing a mistake 
+
+## 1. Only changes, but no commits and no push
+
+To undo the changes you've just made (but neither committed nor pushed), right
+click on the file in the Git pane and select "revert". This will roll any
+changes back to the previous commit. Beware: you can't undo this operation!
+You can also undo changes to just part of a file in the diff window. Look for a
+`discard chunk` button above the block of changes that you want to undo. You can
+also discard changes to individual lines or selected text.
+
+## 2. Changes and commits, but no push
+
+Don't do the following if you've pushed the previous commit to GitHub (you're
+effectively rewriting history, which should be done with care when you're doing
+it in public).
+
+If you committed changes too early, you can modify the previous commit by
+staging the extra changes. Before you click commit, select "ammend previous
+commit"
+
+## 3. For changes and commits that are already pushed
+
+If you didn’t catch the mistake right away, you’ll need to look backwards in
+history and find out where it occurred: 
+
+1.  Open the history window by clicking "history" in the Git pane. The history
+    window is divided into two parts. The top part lists every commit to your repo.
+    The bottom part shows you the commit: the SHA (the unique id), the author,
+    the date, the parent and the changes in the commit. Alternatively, use
+    `git log` which also shows commit identifier, the author of the commit, the
+    date of the commit, and the short message that you provided with each commit.
+
+1.  Navigate back in time until you find the commit where the mistake occurred.
+    Write down the parent SHA: that’s the commit that occurred before the mistake
+    so it will be good. There are two options: either change one file or go back
+    to that commit discarding all changes made from then
+    *   See what the file looked like in the past so you can copy-and-paste the
+        old code:
+        ```{bash, error = FALSE}
+            git merge master
+        ```
+        Or copy the version from the past back in to the present:
+        old code:
+        ```{bash, error = FALSE}
+            git checkout <SHA> <filename>
+        ```
+        In both cases you’ll need to finish by staging and committing the files.
+    *   Now suppose you dicide that everything since a particular commit is not 
+        that useful. You can resolve this situation with the git revert command.
+        Notice in the `git log` that the most recent commit has some identifier
+        (e.g. 6d8dafe72a198ed63d11be8592c39bcd14179a6b: NOTE: this identifier
+        string may be different on your computer!). If you want to reverse the
+        change that this commit introduced you can run
+        ```{bash, error = FALSE}
+            git revert --no-edit 6d8dafe
+        ```
+        and the code.R file will be reverted back to the version just before
+        that commit. Note that you do not have to type in the entire identifier
+        string at the command line—the shortest unique substring will suffice.
+        Usually, using the first 7 characters is more than enough.
+        Now when you run git log notice that history is not erased, but the
+        revert is officially in the log.
+        
+## 4. Rebasing history
+
+It's also possible to use Git as if you went back in time and prevented the
+mistake from happening in the first place. This is an advanced technique called
+rebasing history. As you might imagine, going back in time to change the past
+can have a profound impact on the present. It can be useful, but it needs to be
+done with extreme care.
+
+## 5. Final remarks and troubleshooting
+
+If you're still stuck, try <http://sethrobertson.github.io/GitFixUm/fixup.html>
+or <http://justinhileman.info/article/git-pretty/>. They give step-by-step
+approaches to fixing many common (and not so common!) problems.
 
 # Details about how git works
 
