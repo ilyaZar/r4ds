@@ -21,18 +21,17 @@ Linux kernel, but they can also be smaller scale projects like your own R
 development, homework assignments, papers, or thesis. There are many other VCSs
 available (subversion and Mercurial are currently used extensively in opens
 source projects) but Git is one of the easier ones to set up. It is also well
-supported by the GitHub ecosystem, and UI has recently set up its own GitHub
-servise.
+supported by the GitHub ecosystem.
 
 You can install Git on your own Linux system. Git is available for installation
 as a package within most Linux distributions and can be installed that way
 (e.g. using yum or dnf on Red Hat systems or apt-get on Debian systems, or their
 graphical interfaces). You can also install from source code.
 
-A number of programming editors Interated Develop[ment Enviornments (IDEs)
-include Git support. Several Emacs Git modes are available. RStudio has
+A number of programming editors, called Integrated Development Enviornments
+(IDEs), include Git support. Several Emacs Git modes are available. RStudio has
 integrated Git support. Checkout other instructions available in
-http://happygitwithr.com/
+<http://happygitwithr.com/>.
 
 There is a graphical interface `git-gui` that may be useful.
 
@@ -47,8 +46,9 @@ In the shell, use
 git config --global user.name "Your Name Comes Here"
 git config --global user.email your_email@yourdomain.example.com
 ```
-These two commands only need to be executed once. The information you provide is included in a `.gitconfig` file in your home directory and is used to label your
-actions in the Git log.
+These two commands only need to be __executed once__. The information you
+provide is included in a `.gitconfig` file in your home directory and is used to
+label your actions in the Git log.
 
 If you have spaces in the name you provide then be sure to enclose the name in
 quotation marks. (You can check if you’re set up correctly by running 
@@ -66,6 +66,67 @@ Initialized empty Git repository in /home/luke/myproject/.git/
 If you type `ls -a` you will see a directory named `.git` has been added.
 This directory stores all of the history information and other configuration
 data. Don't touch this directory.
+
+Before creating a git repo, you need to set Git as a version control system in
+the global options of RStudio and generate an SSH-key which is passed to GitHub.
+
+To create a __local__ Git repo:
+
+*   Set up a project
+*   go to the project folder and type `git init`
+*   restart RStudio
+
+To synchronise with GitHub:
+
+*   Create a new repo on GitHub: <https://github.com/new>. Give it the same name
+    as your package, and include the package title as the repo description. 
+    Leave all the other options as is, then click Submit.
+*   Open a shell, then follow the instructions on the new repo page. They'll
+    look something like this:
+    ```{bash, error = FALSE}
+    git remote add origin https://github.com/useRaddictIZ/PGAS_KZ.git
+    git push -u origin master
+    ```
+    The first line tells Git that your local repo has a remote version on GitHub,
+    and calls it "origin". The second line pushes all your current work to that
+    repo. There is a difference between remote URLs with SSH or HTTPS. HTTPS
+    works for me, but alternatively git@github.com/useRaddictIZ/PGAS_KZ.git can
+    be used. More help on this can be found on 
+    <https://help.github.com/articles/changing-a-remote-s-url/>. Notably, the
+    types can be switched:
+    ```{bash, error = FALSE}
+    git remote -v
+    git remote set-url origin https://github.com/useRaddictIZ/PGAS_KZ.git
+    ```
+    Pushing everything for the first time requires username and password. After
+    this is done you can see all files on the GitHub page.
+
+Now let’s make a commit and verify that the remote repo updates: Modify
+DESCRIPTION to add URL and BugReports fields that link to your new GitHub site.
+For example, dplyr has:
+```{bash, error = FALSE}
+URL: http://github.com/hadley/dplyr
+BugReports: http://github.com/hadley/dplyr/issues
+```
+Save the file and commit (with the message “Updating DESCRIPTION to add links to
+GitHub site”). Push your changes to GitHub by clicking "push". (This is the same
+as running `git push` in the shell). Go to your GitHub page and look at the
+DESCRIPTION.
+
+Usually, each push will include multiple commits. This is because you push much
+less often than you commit. How often you push versus commit is completely up to
+you, but pushing code means publishing code. So strive to push code that works.
+
+To ensure your code is clean, I recommend always running R CMD check before you
+push (a topic you'll learn about in the chapter on automated checking). If you
+want to publish code that doesn't work (yet), I recommend using a branch, as
+you'll learn about below in branching.
+
+Once you've connected your repo to GitHub, the Git pane will show you how many
+commits you have locally that are not on GitHub: "Your branch is ahead of
+origin/master by xxx comits". This message indicates that I have xxx number 
+commit locallys (my local branch: master) that is not on GitHub
+("origin/master").
 
 # Record changes
 
