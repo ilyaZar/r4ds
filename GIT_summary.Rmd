@@ -80,7 +80,11 @@ To synchronise with GitHub:
 
 *   Create a new repo on GitHub: <https://github.com/new>. Give it the same name
     as your package, and include the package title as the repo description. 
-    Leave all the other options as is, then click Submit.
+    Leave all the other options as is, then click "submit".
+*   Before you execute the commands below (more precisely, 
+    `git push -u origin master`), make sure you have made an initial commit
+    within the R-project, tracking all initial files (otherwise there is just
+    nothing to push to GitHub)
 *   Open a shell, then follow the instructions on the new repo page. They'll
     look something like this:
     ```{bash, error = FALSE}
