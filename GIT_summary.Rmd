@@ -91,13 +91,13 @@ To synchronise with GitHub:
     git remote add origin https://github.com/useRaddictIZ/PGAS_KZ.git
     git push -u origin master
     ```
-    The first line tells Git that your local repo has a remote version on GitHub,
-    and calls it "origin". The second line pushes all your current work to that
-    repo. There is a difference between remote URLs with SSH or HTTPS. HTTPS
-    works for me, but alternatively git@github.com/useRaddictIZ/PGAS_KZ.git can
-    be used. More help on this can be found on 
-    <https://help.github.com/articles/changing-a-remote-s-url/>. Notably, the
-    types can be switched:
+    The first line tells Git that your local repo has a remote version on
+    GitHub, and calls it "origin". The second line pushes all your current work
+    to that repo. There is a difference between remote URLs with SSH or HTTPS.
+    HTTPS works for me, but alternatively 
+    git@github.com/useRaddictIZ/PGAS_KZ.git can be used. More help on this can
+    be found on <https://help.github.com/articles/changing-a-remote-s-url/>. 
+    Notably, the types can be switched:
     ```{bash, error = FALSE}
     git remote -v
     git remote set-url origin https://github.com/useRaddictIZ/PGAS_KZ.git
@@ -112,8 +112,8 @@ For example, dplyr has:
 URL: http://github.com/hadley/dplyr
 BugReports: http://github.com/hadley/dplyr/issues
 ```
-Save the file and commit (with the message “Updating DESCRIPTION to add links to
-GitHub site”). Push your changes to GitHub by clicking "push". (This is the same
+Save the file and commit (with the message "Updating DESCRIPTION to add links to
+GitHub site"). Push your changes to GitHub by clicking "push". (This is the same
 as running `git push` in the shell). Go to your GitHub page and look at the
 DESCRIPTION.
 
@@ -142,7 +142,7 @@ git status
 git diff
 ```
 to see an overview of changes and  to show detailed differences.
-In RStudio click on Diff. The background colours tells
+In RStudio click on "Diff". The background colours tells
 you whether the text has been added (green) or removed (red). (If you're
 colourblind you can use the line numbers in the two columns at the far left as a
 guide: a number in the first column identifies the old version, a number in
