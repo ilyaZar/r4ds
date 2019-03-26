@@ -452,6 +452,11 @@ applies here i.e. `rm` means "remove", `-r` refers to recursive and `--cached`
 means "index" and not the true file (so without `--cached` the file would be 
 lost!).
 
+More information can be found on:
+<https://stackoverflow.com/questions/1274057/how-to-make-git-forget-about-a-file
+-that-was-tracked-but-is-now-in-gitignore> and <https://stackoverflow.com/
+questions/6618612/ignoring-a-directory-from-a-git-repo-after-its-been-added>.
+
 Some developers never commit derived files, files that can be generated
 automatically. For an R package this would mean ignoring the files in the
 NAMESPACE and man/ directories because they're generated from comments. From a
